@@ -1,3 +1,9 @@
+import sys
+import os
+import platform
+if platform.platform() == 'Linux-4.9.32-v7+-armv7l-with-debian-8.0':
+    import subprocess
+    subprocess.call(" ln -s /usr/local/lib/python3.4/dist-packages/cv2.cpython-34m.so cv2.so", shell=True)		        
 import cv2
 
 
