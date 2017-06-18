@@ -11,10 +11,13 @@ from sdc_serial import sdc_serial
 import sys
 import os
 import platform
+import subprocess
 if platform.platform() == 'Linux-4.9.32-v7+-armv7l-with-debian-8.0':
-    import subprocess
     subprocess.call(" ln -s /usr/local/lib/python3.4/dist-packages/cv2.cpython-34m.so cv2.so", shell=True)		        
 import cv2
+
+subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus, Auto\" 0", shell=True)	
+subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus (Absolute)\" 0", shell=True)	
 
 def set_res(cap, x,y):
     cap.set(3, int(x))
@@ -46,6 +49,7 @@ try:
 				img_path = dir + '/'+'IMG'+'/' + img_name
 				cv2.imwrite('IMG/'+img_name,img) #save image
 				data = [img_path, steering_angle, throttle] + ultrasonics
+				print(data)
 				datawriter.writerow(data)
 			counter += 1
 

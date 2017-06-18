@@ -1,11 +1,13 @@
 import sys
 import os
 import platform
+import subprocess
 if platform.platform() == 'Linux-4.9.32-v7+-armv7l-with-debian-8.0':
-    import subprocess
     subprocess.call(" ln -s /usr/local/lib/python3.4/dist-packages/cv2.cpython-34m.so cv2.so", shell=True)		        
 import cv2
 
+subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus, Auto\" 0", shell=True)	
+subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus (Absolute)\" 0", shell=True)	
 
 def set_res(cap, x,y):
     cap.set(3, int(x))
@@ -13,10 +15,10 @@ def set_res(cap, x,y):
     return str(cap.get(3)),str(cap.get(4))
 
 cv2.namedWindow("preview")
-vc = cv2.VideoCapture(2)
+vc = cv2.VideoCapture(1)
 e,c = set_res(vc,1280,720)
 print(e,c)
-vc.set(int(39), 0) # turn the autofocus off, http://docs.opencv.org/trunk/d4/d15/group__videoio__flags__base.html#ggaeb8dd9c89c10a5c63c139bf7c4f5704da7c2fa550ba270713fca1405397b90ae00
+vc.set(28, 20) # turn the autofocus off, http://docs.opencv.org/trunk/d4/d15/group__videoio__flags__base.html#ggaeb8dd9c89c10a5c63c139bf7c4f5704da7c2fa550ba270713fca1405397b90ae00
 
 if vc.isOpened(): # try to get the first frame
     rval, frame = vc.read()
