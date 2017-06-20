@@ -7,14 +7,14 @@ if platform.platform() == 'Linux-4.9.32-v7+-armv7l-with-debian-8.0':
 import cv2
 
 subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus, Auto\" 0", shell=True)	
-subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus (Absolute)\" 0", shell=True)	
+#subprocess.call(" uvcdynctrl -d /dev/video0 -s \"Focus (Absolute)\" 0", shell=True)	
 def set_res(cap, x,y):
     cap.set(3, int(x))
     cap.set(4, int(y))
     return str(cap.get(3)),str(cap.get(4))
 
 # initialize the camera
-cam = cv2.VideoCapture(0)   # 0 -> index of camera
+cam = cv2.VideoCapture(1)   # 0 -> index of camera
 e,c = set_res(cam,1280,720)
 print(e,c)
 s, img = cam.read()
