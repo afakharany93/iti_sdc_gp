@@ -30,24 +30,27 @@ while(true):
 	else:
 	    rval = False
 	count = 0
-	while rval:
-		start = time.time()
-	    rval, img_center = cam.read()
+	try:
+		while rval:
+			start = time.time()
+		    rval, img_center = cam.read()
 
-		img_center = cv2.resize(cv2.cvtColor(img_center, cv2.COLOR_BGR2GRAY), dim, interpolation = cv2.INTER_AREA)-127.0 - 0.5
-		
+			img_center = cv2.resize(cv2.cvtColor(img_center, cv2.COLOR_BGR2GRAY), dim, interpolation = cv2.INTER_AREA)-127.0 - 0.5
+			
 
-		img_center = np.reshape(img_center, (1,img_center.shape[0], img_center.shape[1],1))
-		action = model.predict(img_center)
-		steering = round(action[0][0][0])
-		throttle = round(action[1][0][0])
+			img_center = np.reshape(img_center, (1,img_center.shape[0], img_center.shape[1],1))
+			action = model.predict(img_center)
+			steering = round(action[0][0][0])
+			throttle = round(action[1][0][0])
 
-		steering = min(max(steering,0),8)
-		throttle = min(max(throttle,0),8)
+			steering = min(max(steering,0),8)
+			throttle = min(max(throttle,0),8)
 
-		ser.send_data_serial(steering,throttle)
-		end = time.time()
-		print(count,' steer=',steering,' throt=', throttle,' elapsed=', end-start)
+			ser.send_data_serial(steering,throttle)
+			end = time.time()
+			print(count,' steer=',steering,' throt=', throttle,' elapsed=', end-start)
 
 
-	    count+=1
+		    count+=1
+	finally:
+		ser.exit()
