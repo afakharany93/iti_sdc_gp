@@ -24,7 +24,7 @@ model = load_model('model_final.h5')
 ser = sdc_serial('/dev/ttyACM0',9600)
 
 
-while(true):
+while(True):
 	if cam.isOpened(): # try to get the first frame
 	    rval, img_center = cam.read()
 	else:
@@ -33,9 +33,9 @@ while(true):
 	try:
 		while rval:
 			start = time.time()
-		    rval, img_center = cam.read()
+			rval, img_center = cam.read()
 
-			img_center = cv2.resize(cv2.cvtColor(img_center, cv2.COLOR_BGR2GRAY), dim, interpolation = cv2.INTER_AREA)-127.0 - 0.5
+			img_center = cv2.resize(cv2.cvtColor(img_center, cv2.COLOR_BGR2GRAY), dim, interpolation = cv2.INTER_AREA)/127.0 - 1.0
 			
 
 			img_center = np.reshape(img_center, (1,img_center.shape[0], img_center.shape[1],1))
@@ -49,8 +49,6 @@ while(true):
 			ser.send_data_serial(steering,throttle)
 			end = time.time()
 			print(count,' steer=',steering,' throt=', throttle,' elapsed=', end-start)
-
-
-		    count+=1
+			count+=1
 	finally:
 		ser.exit()
